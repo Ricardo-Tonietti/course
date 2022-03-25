@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -24,14 +25,14 @@ import java.util.UUID;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class CourseController {
 
+    public static final String COURSENOTFOUND = "Course not found!";
+
     @Autowired
     private CourseService courseService;
 
-    public static final String COURSENOTFOUND = "Course not found!";
-
     @PostMapping
     @ApiOperation(value = "Return created of Course")
-    public ResponseEntity<Object> saveCourse(@RequestBody @Validated CourseDto courseDto){
+    public ResponseEntity<Object> saveCourse(@RequestBody @Valid CourseDto courseDto){
         var courseModel = new CourseModel();
         BeanUtils.copyProperties(courseDto,courseModel);
         courseModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
@@ -54,7 +55,7 @@ public class CourseController {
     @PutMapping("/{courseId}")
     @ApiOperation(value = "Return update Course")
     public ResponseEntity<Object> updateCourse(@PathVariable(value = "courseId")UUID courseId,
-                                               @RequestBody @Validated CourseDto courseDto ){
+                                               @RequestBody @Valid CourseDto courseDto ){
         Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
         if(!courseModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(COURSENOTFOUND);
