@@ -24,6 +24,8 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
+    public static final String COURSENOTFOUND = "Course not found!";
+
     @PostMapping
     public ResponseEntity<Object> saveCourse(@RequestBody @Validated CourseDto courseDto){
         var courseModel = new CourseModel();
@@ -39,7 +41,7 @@ public class CourseController {
     public ResponseEntity<Object> deleteCourse(@PathVariable(value = "courseId")UUID courseId){
         Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
         if(!courseModelOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course Not Found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(COURSENOTFOUND);
         }
         courseService.delete(courseModelOptional.get());
         return ResponseEntity.status(HttpStatus.OK).body("Course deleted successfully");
@@ -50,7 +52,7 @@ public class CourseController {
                                                @RequestBody @Validated CourseDto courseDto ){
         Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
         if(!courseModelOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course Not Found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(COURSENOTFOUND);
         }
         var courseModel = courseModelOptional.get();
         BeanUtils.copyProperties(courseDto,courseModel);
@@ -69,7 +71,7 @@ public class CourseController {
     public ResponseEntity<Object> getOneCourse (@PathVariable(value = "courseId")UUID courseId){
         Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
         if(!courseModelOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course Not Found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(COURSENOTFOUND);
         }
         return ResponseEntity.status(HttpStatus.OK).body(courseModelOptional.get());
     }
