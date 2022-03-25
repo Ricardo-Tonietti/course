@@ -3,6 +3,8 @@ package com.ead.course.controllers;
 import com.ead.course.dtos.CourseDto;
 import com.ead.course.models.CourseModel;
 import com.ead.course.services.CourseService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/courses")
+@Api(value = "API REST Course")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class CourseController {
 
@@ -27,6 +30,7 @@ public class CourseController {
     public static final String COURSENOTFOUND = "Course not found!";
 
     @PostMapping
+    @ApiOperation(value = "Return created of Course")
     public ResponseEntity<Object> saveCourse(@RequestBody @Validated CourseDto courseDto){
         var courseModel = new CourseModel();
         BeanUtils.copyProperties(courseDto,courseModel);
@@ -48,6 +52,7 @@ public class CourseController {
     }
 
     @PutMapping("/{courseId}")
+    @ApiOperation(value = "Return update Course")
     public ResponseEntity<Object> updateCourse(@PathVariable(value = "courseId")UUID courseId,
                                                @RequestBody @Validated CourseDto courseDto ){
         Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
@@ -63,11 +68,13 @@ public class CourseController {
     }
 
     @GetMapping
+    @ApiOperation(value = "Return List of Course")
     public ResponseEntity<List<CourseModel>> getAllCourses(){
         return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll());
     }
 
     @GetMapping("/{courseId}")
+    @ApiOperation(value = "Return one Course")
     public ResponseEntity<Object> getOneCourse (@PathVariable(value = "courseId")UUID courseId){
         Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
         if(!courseModelOptional.isPresent()){
