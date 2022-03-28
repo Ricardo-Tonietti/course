@@ -9,6 +9,7 @@ import com.ead.course.services.ModuleService;
 import com.ead.course.spedifications.SpecificationTemplate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Log4j2
 @RestController
 @Api(value = "API REST Course")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -46,26 +48,34 @@ public class ModuleController {
     public ResponseEntity<Object> saveModule(@PathVariable(value = "courseId") UUID courseId,
                                             @RequestBody @Valid ModuleDto moduleDto){
 
+        log.debug("POST saveModule moduleDto received {} ", moduleDto.toString());
+
         Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
         if(!courseModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(COURSENOTFOUND);
         }
 
-        var modeleModel = new ModuleModel();
-        BeanUtils.copyProperties(moduleDto,modeleModel);
-        modeleModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
-        modeleModel.setCourse(courseModelOptional.get());
-        return ResponseEntity.status(HttpStatus.CREATED).body(moduleService.save(modeleModel));
+        var moduleModel = new ModuleModel();
+        BeanUtils.copyProperties(moduleDto,moduleModel);
+        moduleModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
+        moduleModel.setCourse(courseModelOptional.get());
+        log.debug("POST saveModule moduleId saved {} ", moduleModel.getDescription());
+        log.info("Module saved successfully moduleId {} ", moduleModel.getDescription());
+        return ResponseEntity.status(HttpStatus.CREATED).body(moduleService.save(moduleModel));
     }
 
     @DeleteMapping("/courses/{courseId}/modules/{moduleId}")
     public ResponseEntity<Object> deleteModule(@PathVariable(value = "courseId")UUID courseId,
                                                @PathVariable(value = "moduleId")UUID moduleId){
+        log.debug("DELETE deleteModule moduleId received {} ", moduleId);
+
         Optional<ModuleModel> moduleModelOptional = moduleService.findModuleIntoCourse(courseId, moduleId);
         if(!moduleModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MODULENOTFOUND);
         }
         moduleService.delete(moduleModelOptional.get());
+        log.debug("DELETE deleteModule moduleId deleted {} ", moduleId);
+        log.info("Module deleted successfully moduleId {} ", moduleId);
         return ResponseEntity.status(HttpStatus.OK).body("Module deleted successfully");
     }
 
@@ -75,6 +85,8 @@ public class ModuleController {
     public ResponseEntity<Object> updateModule( @PathVariable(value = "courseId")UUID courseId,
                                                 @PathVariable(value = "moduleId")UUID moduleId,
                                                 @RequestBody @Valid ModuleDto moduleDto){
+        log.debug("PUT updateModule moduleDto received {} ", moduleDto.toString());
+
         Optional<ModuleModel> moduleModelOptional = moduleService.findModuleIntoCourse(courseId, moduleId);
         if(!moduleModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MODULENOTFOUND);
@@ -82,6 +94,8 @@ public class ModuleController {
         var moduleModel = moduleModelOptional.get();
         moduleModel.setTitle(moduleDto.getTitle());
         moduleModel.setDescription(moduleDto.getDescription());
+        log.debug("PUT updateModule moduleId saved {} ", moduleModel.getModuleId());
+        log.info("Module updated successfully moduleId {} ", moduleModel.getModuleId());
         return ResponseEntity.status(HttpStatus.OK).body(moduleService.save(moduleModel));
     }
 
