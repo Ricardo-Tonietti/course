@@ -4,6 +4,7 @@ import com.ead.course.dtos.CourseDto;
 import com.ead.course.models.CourseModel;
 import com.ead.course.services.CourseService;
 import com.ead.course.spedifications.SpecificationTemplate;
+import com.ead.course.validation.CourseValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,10 +39,17 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private CourseValidator courseValidator;
+
     @PostMapping
     @ApiOperation(value = "Return created of Course")
-    public ResponseEntity<Object> saveCourse(@RequestBody @Valid CourseDto courseDto){
+    public ResponseEntity<Object> saveCourse(@RequestBody CourseDto courseDto, Errors errors){
         log.debug("POST saveCourse courseDto received {} ", courseDto.toString());
+        courseValidator.validate(courseDto, errors);
+        if(errors.hasErrors()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors.getAllErrors());
+        }
 
         var courseModel = new CourseModel();
         BeanUtils.copyProperties(courseDto,courseModel);
