@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface CourseRepository extends JpaRepository<CourseModel, UUID>,
         JpaSpecificationExecutor <CourseModel> {
+
 }
