@@ -1,5 +1,8 @@
 server:
   port: 8082
+  servelet:
+    context-path: '/ead-course/'
+
 spring:
   application:
     name: ead-course-service
@@ -34,7 +37,7 @@ spring:
 ead:
   api:
     url:
-      authuser: 'http://localhost:8087'
+      authuser: 'http://ead-authuser-service'
 
 eureka:
   client:
