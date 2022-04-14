@@ -18,5 +18,4 @@ public interface CourseService {
 
     Page<CourseModel> findAll(Specification<CourseModel> spec, Pageable pageable);
 
-    void deleteCourseByUser(UUID userId);
 }
