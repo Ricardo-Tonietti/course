@@ -1,5 +1,6 @@
 package com.ead.course.services.impl;
 
+import com.ead.course.models.UserModel;
 import com.ead.course.repositories.UserRepository;
 import com.ead.course.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,4 +12,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Override
+    public UserModel save(UserModel userModel) {
+        return userRepository.save(userModel);
+    }
 }
