@@ -21,7 +21,7 @@ public class UserModel implements Serializable {
     private static final long serialVersionUD = 1L;
 
     @Id
-    private UUID userid;
+    private UUID userId;
     @Column(nullable = false, unique = true, length = 50)
     private String email;
     @Column(nullable = false, length = 150)
@@ -35,11 +35,8 @@ public class UserModel implements Serializable {
     @Column
     private String imageUrl;
 
+    @ManyToMany(mappedBy = "users",fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ManyToMany(mappedBy = "users" , fetch = FetchType.LAZY)
     private Set<CourseModel> courses;
-
-
-
 
 }
