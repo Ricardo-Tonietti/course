@@ -1,56 +1,63 @@
-server:
-  port: 8082
-  servlet:
-    context-path: '/ead-course/'
-
+#server:
+#  port: 8082
+#  servlet:
+#    context-path: '/ead-course/'
+#
 spring:
   application:
     name: ead-course-service
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-  datasource:
-    url:  jdbc:postgresql://localhost:5432/ead-course-v2
-    username: postgres
-    password: Info@123
-  jpa:
-    hibernate:
-      ddl-auto: update
-      dialect: org.hibertnate.dialect.PostgreSQLDialect
-      jdbc:
-        lob.non-contextual-creation: true
-    properties:
-      hibernate:
-        show_sql: true
-  output:
-    ansi:
-      enabled: ALWAYS
+  config:
+    import: 'configserver:'
+  cloud:
+    config:
+      discovery:
+        service-id: ead-config-server
 
-  rabbitmq:
-    addresses: amqps://vieccwab:oihhqDXJ59lYp9EYQaV8pNYba_48q46c@toad.rmq.cloudamqp.com/vieccwab
-
-logging:
-  level:
-    com.ead: TRACE
-    root: INFO
-    org.springframework.web: DEBUG
-    org.hibernate: INFO
-
-ead:
-  api:
-    url:
-      authuser: 'http://ead-authuser-service/ead-authuser/'
-  broker:
-    exchange:
-      userEventExchange: ead.userevent
-    queue:
-      userEventQueue:
-        name: ead.userevent.ms.course
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: 'http://localhost:8761/eureka'
-  instance:
-    hostname: localhost
-
+#  mvc:
+#    pathmatch:
+#      matching-strategy: ant_path_matcher
+#  datasource:
+#    url:  jdbc:postgresql://localhost:5432/ead-course-v2
+#    username: postgres
+#    password: Info@123
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#      dialect: org.hibertnate.dialect.PostgreSQLDialect
+#      jdbc:
+#        lob.non-contextual-creation: true
+#    properties:
+#      hibernate:
+#        show_sql: true
+#  output:
+#    ansi:
+#      enabled: ALWAYS
+#
+#  rabbitmq:
+#    addresses: amqps://vieccwab:oihhqDXJ59lYp9EYQaV8pNYba_48q46c@toad.rmq.cloudamqp.com/vieccwab
+#
+#logging:
+#  level:
+#    com.ead: TRACE
+#    root: INFO
+#    org.springframework.web: DEBUG
+#    org.hibernate: INFO
+#
+#ead:
+#  api:
+#    url:
+#      authuser: 'http://ead-authuser-service/ead-authuser/'
+#  broker:
+#    exchange:
+#      userEventExchange: ead.userevent
+#    queue:
+#      userEventQueue:
+#        name: ead.userevent.ms.course
+#
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: 'http://localhost:8761/eureka'
+#  instance:
+#    hostname: localhost
+#
