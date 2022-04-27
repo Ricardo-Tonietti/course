@@ -8,11 +8,7 @@ spring:
     name: ead-course-service
   config:
     import: 'configserver:'
-  cloud:
-    config:
-      discovery:
-        service-id: ead-config-server
-
+#
 #  mvc:
 #    pathmatch:
 #      matching-strategy: ant_path_matcher
@@ -47,17 +43,13 @@ spring:
 #  api:
 #    url:
 #      authuser: 'http://ead-authuser-service/ead-authuser/'
+#
 #  broker:
 #    exchange:
 #      userEventExchange: ead.userevent
+#      notificationCommandExchange: ead.notificationcommand
 #    queue:
 #      userEventQueue:
 #        name: ead.userevent.ms.course
-#
-#eureka:
-#  client:
-#    serviceUrl:
-#      defaultZone: 'http://localhost:8761/eureka'
-#  instance:
-#    hostname: localhost
-#
+#    key:
+#      notificationCommandKey: ms.notification
