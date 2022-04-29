@@ -1,55 +1,12 @@
-#server:
-#  port: 8082
-#  servlet:
-#    context-path: '/ead-course/'
-#
+
 spring:
   application:
     name: ead-course-service
   config:
     import: 'configserver:'
-#
-#  mvc:
-#    pathmatch:
-#      matching-strategy: ant_path_matcher
-#  datasource:
-#    url:  jdbc:postgresql://localhost:5432/ead-course-v2
-#    username: postgres
-#    password: Info@123
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#      dialect: org.hibertnate.dialect.PostgreSQLDialect
-#      jdbc:
-#        lob.non-contextual-creation: true
-#    properties:
-#      hibernate:
-#        show_sql: true
-#  output:
-#    ansi:
-#      enabled: ALWAYS
-#
-#  rabbitmq:
-#    addresses: amqps://vieccwab:oihhqDXJ59lYp9EYQaV8pNYba_48q46c@toad.rmq.cloudamqp.com/vieccwab
-#
-#logging:
-#  level:
-#    com.ead: TRACE
-#    root: INFO
-#    org.springframework.web: DEBUG
-#    org.hibernate: INFO
-#
-#ead:
-#  api:
-#    url:
-#      authuser: 'http://ead-authuser-service/ead-authuser/'
-#
-#  broker:
-#    exchange:
-#      userEventExchange: ead.userevent
-#      notificationCommandExchange: ead.notificationcommand
-#    queue:
-#      userEventQueue:
-#        name: ead.userevent.ms.course
-#    key:
-#      notificationCommandKey: ms.notification
+  cloud:
+    config:
+      discovery:
+        serviceId: ead-config-server
+      username: configserver
+      password: 'ead123cs'

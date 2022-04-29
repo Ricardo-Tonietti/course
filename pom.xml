@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>com.ead</groupId>
 	<artifactId>course</artifactId>
-	<version>3.0.0</version>
+	<version>4.0.0</version>
 	<name>course</name>
-	<description>Projeto DECODER - MS course</description>
+	<description>Project DECODER - MS course</description>
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>2021.0.1</spring-cloud.version>
