@@ -22,41 +22,39 @@ public class CourseValidator implements Validator {
     @Autowired
     @Qualifier("defaultValidator")
     private Validator validator;
-    @Autowired
-    private UserService userService;
 
     @Autowired
-    private AuthenticationCurrentUserService authenticationCurrentUserService;
+    UserService userService;
+
+    @Autowired
+    AuthenticationCurrentUserService authenticationCurrentUserService;
+
     @Override
-    public boolean supports(Class<?> clazz) {
+    public boolean supports(Class<?> aClass) {
         return false;
     }
 
     @Override
     public void validate(Object o, Errors errors) {
-
         CourseDto courseDto = (CourseDto) o;
         validator.validate(courseDto, errors);
-
         if(!errors.hasErrors()){
-            validateUserInstructor(courseDto.getUserInstructor(), errors );
+            validateUserInstructor(courseDto.getUserInstructor(), errors);
         }
     }
 
     private void validateUserInstructor(UUID userInstructor, Errors errors){
         UUID currentUserId = authenticationCurrentUserService.getCurrentUser().getUserId();
-
-        if(currentUserId.equals(userInstructor)){
+        if(currentUserId.equals(userInstructor)) {
             Optional<UserModel> userModelOptional = userService.findById(userInstructor);
-            if(!userModelOptional.isPresent()){
-                errors.rejectValue("UserInstructor", "responseUserInstructor", "Instructor Not Found!");
+            if (!userModelOptional.isPresent()) {
+                errors.rejectValue("userInstructor", "UserInstructorError", "Instructor not found.");
             }
-            if(userModelOptional.get().getUserType().equals(UserType.STUDENT.toString())){
-                errors.rejectValue("UserInstructor", "responseUserInstructor", "User must be INSTRUCTOR or ADMIN");
+            if (userModelOptional.get().getUserType().equals(UserType.STUDENT.toString())) {
+                errors.rejectValue("userInstructor", "UserInstructorError", "User must be INSTRUCTOR or ADMIN.");
             }
-        }else{
+        } else {
             throw new AccessDeniedException("Forbidden");
         }
-
     }
 }
