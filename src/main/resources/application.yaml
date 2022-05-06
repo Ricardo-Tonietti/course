@@ -1,12 +1,6 @@
-
 spring:
+  profiles:
+    active: dev
   application:
     name: ead-course-service
-  config:
-    import: 'configserver:'
-  cloud:
-    config:
-      discovery:
-        serviceId: ead-config-server
-      username: configserver
-      password: 'ead123cs'
+
