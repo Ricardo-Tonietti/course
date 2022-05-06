@@ -34,7 +34,7 @@ public class UserConsumer {
                 break;
             case DELETE:
                 userService.delete(userEventDto.getUserId());
-
+                break;
         }
     }
 }
